@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Game</title>
+    <link rel="stylesheet" type="text/css" href="game_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Memory Game</h2>
+        <div class="game"> </div>
+        <div id="winMessage" style="display: none;"></div>
+        <div id="score">Moves: 0</div>
+        <div id="timer">Time: 00:00</div>
+        <button class="reset" onclick="resetGame();">Reset Game</button>
+    </div>
+    <script>
+        const emojis = ["😃","😃", "😍","😍","👍","👍","⭐","⭐","🔥","🔥","😎","😎","❤️","❤️","🌹","🌹"];
+        var shuf_emojis = emojis.sort(() => (Math.random() > .5) ? 2 : -1);
+        var startTime, endTime;
+        var moves = 0;
+        var timerInterval;
+
+        function updateTime() {
+            if (startTime) {
+                var elapsedTime = Math.floor((new Date() - startTime) / 1000);
+                var minutes = Math.floor(elapsedTime / 60);
+                var seconds = elapsedTime % 60;
+                document.getElementById('timer').innerText = 'Time: ' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(updateTime, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function updateMoves() {
+            document.getElementById('score').innerText = 'Moves: ' + moves;
+        }
+
+        for (var i = 0; i < emojis.length; i++) {
+            let box = document.createElement('div');
+            box.className = 'item';
+            box.innerHTML = shuf_emojis[i];
+
+            box.onclick = function () {
+                if (!startTime) {
+                    startTime = new Date();
+                    startTimer();
+                }
+                this.classList.add('boxOpen');
+                setTimeout(function () {
+                    if (document.querySelectorAll('.boxOpen').length > 1) {
+                        moves++;
+                        updateMoves();
+                        if (document.querySelectorAll('.boxOpen')[0].innerHTML ==
+                            document.querySelectorAll('.boxOpen')[1].innerHTML) {
+                            document.querySelectorAll('.boxOpen')[0].classList.add('boxMatch');
+                            document.querySelectorAll('.boxOpen')[1].classList.add('boxMatch');
+                            document.querySelectorAll('.boxOpen')[1].classList.remove('boxOpen');
+                            document.querySelectorAll('.boxOpen')[0].classList.remove('boxOpen');
+
+                            if (document.querySelectorAll('.boxMatch').length == emojis.length) {
+                                endTime = new Date();
+                                var elapsedTime = (endTime - startTime) / 1000;
+                                var score = Math.floor(10000 / (elapsedTime + moves));
+                                stopTimer(); // Stop the timer when the game is won
+                                var winMessage = 'You have won the game.' + '<br>' + '<br>Score: ' + score + '<br>Moves: ' + moves + '<br>'+ document.getElementById('timer').innerText + '<br>' +'<br>To play again, click Reset Game.';
+                                document.getElementById('winMessage').innerHTML = winMessage;
+                                document.getElementById('winMessage').style.display = 'block';
+                                document.getElementById('score').style.display = 'none';
+                                document.getElementById('timer').style.display = 'none';
+                            }
+                        } else {
+                            document.querySelectorAll('.boxOpen')[1].classList.remove('boxOpen');
+                            document.querySelectorAll('.boxOpen')[0].classList.remove('boxOpen');
+                        }
+                    }
+                }, 500);
+            }
+
+            document.querySelector('.game').appendChild(box);
+        }
+
+        function resetGame() {
+            startTime = null;
+            endTime = null;
+            moves = 0;
+            document.getElementById('score').innerText = 'Moves: 0';
+            document.getElementById('timer').innerText = 'Time: 00:00';
+            document.getElementById('winMessage').style.display = 'none';
+            document.getElementById('score').style.display = 'block';
+            document.getElementById('timer').style.display = 'block';
+            var items = document.querySelectorAll('.item');
+            items.forEach(item => {
+                item.classList.remove('boxOpen');
+                item.classList.remove('boxMatch');
+            });
+            shuf_emojis = emojis.sort(() => (Math.random() > .5) ? 2 : -1);
+            items.forEach((item, index) => {
+                item.innerHTML = shuf_emojis[index];
+            });
+        }
+    </script>
+</body>
+</html>

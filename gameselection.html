@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Selection</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Additional styles specific to the game selection page */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      margin: 0; /* Reset default margin */
+      padding: 0; /* Reset default padding */
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .game-selection {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center; /* Center the content */
+    }
+
+    .game-selection h2 {
+      margin-bottom: 20px;
+    }
+
+    .game-selection ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center; /* Center the game selections */
+    }
+
+    .game-selection li {
+      width: calc(33.33% - 20px); /* Adjust the width and spacing */
+      margin-bottom: 40px; /* Increase the margin bottom for better spacing */
+    }
+
+    .game-selection a {
+      display: block;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .game-selection a img {
+     
+      height: auto;
+    }
+
+    .game-selection a:hover {
+      transform: scale(1.1);
+    }
+
+    /* Responsive styles */
+    @media only screen and (max-width: 768px) {
+      .game-selection li {
+        width: calc(50% - 20px); /* Each game takes half of the space on smaller screens */
+      }
+      .game-selection li:nth-child(3) {
+        width: calc(100% - 20px); /* Adjust the width for the third game on smaller screens */
+        margin-top: 40px; /* Increase the margin top for the third game to move it below the first two */
+      }
+    }
+
+    @media only screen and (max-width: 480px) {
+      .game-selection li {
+        width: calc(100% - 20px); /* Each game takes full width on smaller screens */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Games</h1>
+    </header>
+    <section class="game-selection">
+      <h2>Select a Game</h2>
+      <ul>
+        <li><a href="game.html"><img src="game1.png" alt="Game 1"></a></li>
+        <li><a href="game2.html"><img src="game2.png" alt="Game 2"></a></li>
+        <li style="width: 100%;"><a href="memory_game.html"><img src="game3.png" alt="Game 3"></a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
